@@ -1,0 +1,7 @@
+built/
+pxt_modules/
+node_modules/
+package-lock.json
+_probe*.ts
+_probe*.blocks
+.pxt/

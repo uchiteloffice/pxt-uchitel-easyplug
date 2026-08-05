@@ -1,0 +1,6 @@
+{
+    "uchitel|block": "Учител",
+    "uchitel.dht11|block": "DHT11 на пин %pin отчита %reading",
+    "uchitel.DHT11Reading.Temperature|block": "температура (°C)",
+    "uchitel.DHT11Reading.Humidity|block": "влажност (%)"
+}

@@ -1,0 +1,7 @@
+{
+    "uchitel": "Блокове за комплекта Keyestudio EASY Plug (KS4020).",
+    "uchitel.dht11": "Отчита температурата или влажността от сензора DHT11.",
+    "uchitel.dht11|param|pin": "пинът, на който е закачен сензорът",
+    "uchitel.dht11|param|reading": "какво да се отчете",
+    "uchitel.DHT11Reading": "Какво да отчете сензорът DHT11."
+}

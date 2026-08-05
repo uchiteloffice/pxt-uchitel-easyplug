@@ -1,0 +1,24 @@
+{
+    "name": "uchitel-easyplug",
+    "version": "0.0.1",
+    "description": "Блокове на български за комплекта Keyestudio EASY Plug (KS4020) — uchitel.bg",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "microphone": "*"
+    },
+    "files": [
+        "README.md",
+        "main.ts",
+        "_locales/bg/uchitel-easyplug-strings.json",
+        "_locales/bg/uchitel-easyplug-jsdoc-strings.json"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
