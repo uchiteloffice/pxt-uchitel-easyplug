@@ -1,3 +1,4 @@
 {
-  "package": "uchitel-easyplug=github:uchiteloffice/pxt-uchitel-easyplug#master"
+  "repo": "uchiteloffice/pxt-uchitel-easyplug",
+  "_zashto": "Рефът се сглобява като <име>=github:<repo>#v<версия от pxt.json>. НЕ #master — MakeCode КЕШИРА съдържанието на клона, значи проверката щеше да оценява стара версия и да я обявява за чиста."
 }
