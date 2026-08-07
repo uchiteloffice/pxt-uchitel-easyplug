@@ -5,3 +5,4 @@ package-lock.json
 _probe*.ts
 _probe*.blocks
 .pxt/
+_verify_out/
