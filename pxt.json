@@ -1,6 +1,6 @@
 {
     "name": "uchitel-easyplug",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Блокове на български за комплекта Keyestudio EASY Plug (KS4020) — uchitel.bg",
     "license": "MIT",
     "dependencies": {
