@@ -2,5 +2,12 @@
     "uchitel|block": "Учител",
     "uchitel.dht11|block": "DHT11 на пин %pin отчита %reading",
     "uchitel.DHT11Reading.Temperature|block": "температура (°C)",
-    "uchitel.DHT11Reading.Humidity|block": "влажност (%)"
+    "uchitel.DHT11Reading.Humidity|block": "влажност (%)",
+    "uchitel.buttonPressed|block": "бутонът на пин %pin е натиснат",
+    "uchitel.onButtonPressed|block": "при натискане на бутона на пин %pin",
+    "uchitel.tilt|block": "сензорът за наклон на пин %pin е задействан",
+    "uchitel.setRelay|block": "%state релето на пин %pin",
+    "uchitel.setLed|block": "%state светодиода на пин %pin",
+    "uchitel.OnOff.On|block": "включи",
+    "uchitel.OnOff.Off|block": "изключи"
 }

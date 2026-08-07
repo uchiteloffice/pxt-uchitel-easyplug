@@ -3,5 +3,18 @@
     "uchitel.dht11": "Отчита температурата или влажността от сензора DHT11.",
     "uchitel.dht11|param|pin": "пинът, на който е закачен сензорът",
     "uchitel.dht11|param|reading": "какво да се отчете",
-    "uchitel.DHT11Reading": "Какво да отчете сензорът DHT11."
+    "uchitel.DHT11Reading": "Какво да отчете сензорът DHT11.",
+    "uchitel.buttonPressed": "Проверява дали бутонът е натиснат в момента.",
+    "uchitel.buttonPressed|param|pin": "пинът, на който е закачен модулът",
+    "uchitel.onButtonPressed": "Изпълнява кода, когато бутонът бъде натиснат.",
+    "uchitel.onButtonPressed|param|pin": "пинът, на който е закачен модулът",
+    "uchitel.tilt": "Проверява дали сензорът за наклон е задействан.",
+    "uchitel.tilt|param|pin": "пинът, на който е закачен модулът",
+    "uchitel.setRelay": "Включва или изключва релето.",
+    "uchitel.setRelay|param|pin": "пинът, на който е закачен модулът",
+    "uchitel.setRelay|param|state": "включено или изключено",
+    "uchitel.setLed": "Включва или изключва светодиода.",
+    "uchitel.setLed|param|pin": "пинът, на който е закачен модулът",
+    "uchitel.setLed|param|state": "включено или изключено",
+    "uchitel.OnOff": "Дали модулът да е включен, или изключен."
 }

@@ -67,6 +67,77 @@ namespace uchitel {
         return (raw >> 24) & 0x00ff;
     }
 
+    /**
+     * Whether a module is switched on or off.
+     */
+    export enum OnOff {
+        //% block="on"
+        On,
+        //% block="off"
+        Off
+    }
+
+    /**
+     * Read whether the push button module is currently pressed.
+     * @param pin the pin the module is plugged into
+     */
+    //% blockId=uchitel_button_pressed
+    //% block="button at pin %pin is pressed"
+    //% weight=90
+    export function buttonPressed(pin: DigitalPin): boolean {
+        pins.setPull(pin, PinPullMode.PullUp);
+        // Модулът дърпа линията към маса при натискане → 0 значи натиснат.
+        return pins.digitalReadPin(pin) == 0;
+    }
+
+    /**
+     * Run code when the push button module is pressed.
+     * @param pin the pin the module is plugged into
+     */
+    //% blockId=uchitel_on_button_pressed
+    //% block="on button at pin %pin pressed"
+    //% weight=89
+    export function onButtonPressed(pin: DigitalPin, handler: () => void): void {
+        pins.setPull(pin, PinPullMode.PullUp);
+        pins.onPulsed(pin, PulseValue.Low, handler);
+    }
+
+    /**
+     * Read whether the tilt module is triggered.
+     * @param pin the pin the module is plugged into
+     */
+    //% blockId=uchitel_tilt
+    //% block="tilt sensor at pin %pin is triggered"
+    //% weight=88
+    export function tilt(pin: DigitalPin): boolean {
+        pins.setPull(pin, PinPullMode.PullUp);
+        return pins.digitalReadPin(pin) == 0;
+    }
+
+    /**
+     * Switch the relay module on or off.
+     * @param state on or off
+     * @param pin the pin the module is plugged into
+     */
+    //% blockId=uchitel_set_relay
+    //% block="turn %state the relay at pin %pin"
+    //% weight=80
+    export function setRelay(state: OnOff, pin: DigitalPin): void {
+        pins.digitalWritePin(pin, state == OnOff.On ? 1 : 0);
+    }
+
+    /**
+     * Switch the LED module on or off.
+     * @param state on or off
+     * @param pin the pin the module is plugged into
+     */
+    //% blockId=uchitel_set_led
+    //% block="turn %state the LED at pin %pin"
+    //% weight=79
+    export function setLed(state: OnOff, pin: DigitalPin): void {
+        pins.digitalWritePin(pin, state == OnOff.On ? 1 : 0);
+    }
+
     // Чака линията да смени нивото; false = сензорът не отговаря.
     function awaitLevelChange(pin: DigitalPin, level: number): boolean {
         let ticks = 0;
