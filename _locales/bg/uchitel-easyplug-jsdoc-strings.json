@@ -16,5 +16,19 @@
     "uchitel.setLed": "Включва или изключва светодиода.",
     "uchitel.setLed|param|pin": "пинът, на който е закачен модулът",
     "uchitel.setLed|param|state": "включено или изключено",
-    "uchitel.OnOff": "Дали модулът да е включен, или изключен."
+    "uchitel.OnOff": "Дали модулът да е включен, или изключен.",
+    "uchitel.lcdShowText": "Показва ред текст на екрана LCD 1602.",
+    "uchitel.lcdShowText|param|text": "текстът, който да се покаже",
+    "uchitel.lcdShowText|param|line": "кой ред — 1 или 2",
+    "uchitel.lcdShowNumber": "Показва число на екрана LCD 1602.",
+    "uchitel.lcdShowNumber|param|value": "числото, което да се покаже",
+    "uchitel.lcdShowNumber|param|line": "кой ред — 1 или 2",
+    "uchitel.lcdClear": "Изчиства екрана LCD 1602.",
+    "uchitel.lcdSetAddress": "Сменя I2C адреса на екрана. Повечето модули са 0x27.",
+    "uchitel.lcdSetAddress|param|address": "адресът, отпечатан върху модула",
+    "uchitel.LcdAddress": "I2C адресът, отпечатан върху платката на екрана.",
+    "uchitel.displayShowNumber": "Показва число на 4-цифровия дисплей.",
+    "uchitel.displayShowNumber|param|clk": "изводът CLK",
+    "uchitel.displayShowNumber|param|dio": "изводът DIO",
+    "uchitel.displayShowNumber|param|value": "числото от 0 до 9999"
 }

@@ -9,5 +9,12 @@
     "uchitel.setRelay|block": "%state релето на пин %pin",
     "uchitel.setLed|block": "%state светодиода на пин %pin",
     "uchitel.OnOff.On|block": "включи",
-    "uchitel.OnOff.Off|block": "изключи"
+    "uchitel.OnOff.Off|block": "изключи",
+    "uchitel.lcdShowText|block": "LCD: покажи текст %text на ред %line",
+    "uchitel.lcdShowNumber|block": "LCD: покажи число %value на ред %line",
+    "uchitel.lcdClear|block": "LCD: изчисти",
+    "uchitel.lcdSetAddress|block": "LCD: използвай I2C адрес %address",
+    "uchitel.LcdAddress.A27|block": "0x27 (39)",
+    "uchitel.LcdAddress.A3F|block": "0x3F (63)",
+    "uchitel.displayShowNumber|block": "4-цифров дисплей на CLK %clk и DIO %dio: покажи %value"
 }

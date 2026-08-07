@@ -145,6 +145,159 @@ namespace uchitel {
         pins.digitalWritePin(pin, state == OnOff.On ? 1 : 0);
     }
 
+    // ───────────────── LCD 1602 през I2C ─────────────────
+    // Адресът е 0x27 — потвърден в документацията на Keyestudio за EASY plug
+    // 1602 (`LiquidCrystal_I2C lcd(0x27,16,2)`). Някои екземпляри са 0x3F,
+    // затова има и блок за смяна, вместо адресът да е зазидан.
+    let lcdAddr = 0x27;
+    let lcdReady = false;
+
+    function lcdSend(data: number): void {
+        // PCF8574: бит 3 = подсветка, бит 2 = EN. Данните се пращат по 4 бита.
+        pins.i2cWriteNumber(lcdAddr, data | 0x08, NumberFormat.Int8LE);
+        pins.i2cWriteNumber(lcdAddr, data | 0x0c, NumberFormat.Int8LE);
+        control.waitMicros(1);
+        pins.i2cWriteNumber(lcdAddr, data | 0x08, NumberFormat.Int8LE);
+        control.waitMicros(50);
+    }
+
+    function lcdCmd(cmd: number): void {
+        lcdSend(cmd & 0xf0);
+        lcdSend((cmd << 4) & 0xf0);
+    }
+
+    function lcdData(chr: number): void {
+        lcdSend((chr & 0xf0) | 0x01);
+        lcdSend(((chr << 4) & 0xf0) | 0x01);
+    }
+
+    function lcdEnsure(): void {
+        if (lcdReady) return;
+        lcdCmd(0x33); lcdCmd(0x32);   // въвеждане в 4-битов режим
+        lcdCmd(0x28);                 // 2 реда, шрифт 5×8
+        lcdCmd(0x0c);                 // екранът свети, без курсор
+        lcdCmd(0x06);                 // курсорът върви надясно
+        lcdCmd(0x01);                 // изчистване
+        basic.pause(2);
+        lcdReady = true;
+    }
+
+    /**
+     * Show a line of text on the LCD screen.
+     * @param text the text to show
+     * @param line which row, 1 or 2
+     */
+    //% blockId=uchitel_lcd_text
+    //% block="LCD show text %text on line %line"
+    //% line.min=1 line.max=2 line.defl=1
+    //% weight=70
+    export function lcdShowText(text: string, line: number): void {
+        lcdEnsure();
+        lcdCmd(line <= 1 ? 0x80 : 0xc0);
+        // 16 знака на ред; по-дългият текст се отрязва, вместо да прелива.
+        for (let i = 0; i < 16; i++) {
+            lcdData(i < text.length ? text.charCodeAt(i) : 32);
+        }
+    }
+
+    /**
+     * Show a number on the LCD screen.
+     * @param value the number to show
+     * @param line which row, 1 or 2
+     */
+    //% blockId=uchitel_lcd_number
+    //% block="LCD show number %value on line %line"
+    //% line.min=1 line.max=2 line.defl=1
+    //% weight=69
+    export function lcdShowNumber(value: number, line: number): void {
+        lcdShowText("" + value, line);
+    }
+
+    /**
+     * Clear the LCD screen.
+     */
+    //% blockId=uchitel_lcd_clear
+    //% block="LCD clear"
+    //% weight=68
+    export function lcdClear(): void {
+        lcdEnsure();
+        lcdCmd(0x01);
+        basic.pause(2);
+    }
+
+    /**
+     * The I2C address printed on the LCD backpack.
+     */
+    // ⚠ Меню, а НЕ свободно число: документацията на модула казва „0x27", а
+    //   полето за число в MakeCode приема само десетично. Учител, който препише
+    //   0x27, щеше да получи друг адрес и мълчаливо мъртъв екран. Двете
+    //   означения стоят едно до друго в етикета.
+    export enum LcdAddress {
+        //% block="0x27 (39)"
+        A27 = 39,
+        //% block="0x3F (63)"
+        A3F = 63
+    }
+
+    /**
+     * Change the I2C address of the LCD screen. Most modules are 0x27.
+     * @param address the I2C address printed on the module
+     */
+    //% blockId=uchitel_lcd_address
+    //% block="LCD use I2C address %address"
+    //% advanced=true weight=10
+    export function lcdSetAddress(address: LcdAddress): void {
+        lcdAddr = address;
+        lcdReady = false;
+    }
+
+    // ───────────────── 4-цифров дисплей (TM1637) ─────────────────
+    // Чипът е TM1637 — потвърден в документацията на Keyestudio (KS0369),
+    // управлява се с два извода: CLK и DIO.
+    const CIFRI = [0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f];
+
+    function tmStart(clk: DigitalPin, dio: DigitalPin): void {
+        pins.digitalWritePin(clk, 1); pins.digitalWritePin(dio, 1);
+        pins.digitalWritePin(dio, 0); pins.digitalWritePin(clk, 0);
+    }
+
+    function tmStop(clk: DigitalPin, dio: DigitalPin): void {
+        pins.digitalWritePin(clk, 0); pins.digitalWritePin(dio, 0);
+        pins.digitalWritePin(clk, 1); pins.digitalWritePin(dio, 1);
+    }
+
+    function tmWrite(clk: DigitalPin, dio: DigitalPin, bayt: number): void {
+        for (let i = 0; i < 8; i++) {
+            pins.digitalWritePin(clk, 0);
+            pins.digitalWritePin(dio, (bayt >> i) & 1);
+            pins.digitalWritePin(clk, 1);
+        }
+        // деветият такт е потвърждението от чипа
+        pins.digitalWritePin(clk, 0);
+        pins.digitalWritePin(dio, 1);
+        pins.digitalWritePin(clk, 1);
+    }
+
+    /**
+     * Show a number on the 4-digit display.
+     * @param value the number to show, 0 to 9999
+     * @param clk the CLK pin
+     * @param dio the DIO pin
+     */
+    //% blockId=uchitel_tm1637_number
+    //% block="4-digit display at CLK %clk DIO %dio show %value"
+    //% weight=60
+    export function displayShowNumber(clk: DigitalPin, dio: DigitalPin, value: number): void {
+        let n = Math.abs(Math.trunc(value)) % 10000;
+        tmStart(clk, dio); tmWrite(clk, dio, 0x40); tmStop(clk, dio);   // автоадресиране
+        tmStart(clk, dio); tmWrite(clk, dio, 0xc0);                     // от първата цифра
+        for (let poz = 3; poz >= 0; poz--) {
+            tmWrite(clk, dio, CIFRI[Math.idiv(n, Math.pow(10, poz)) % 10]);
+        }
+        tmStop(clk, dio);
+        tmStart(clk, dio); tmWrite(clk, dio, 0x8f); tmStop(clk, dio);   // светене, макс. яркост
+    }
+
     // Чака линията да смени нивото; false = сензорът не отговаря.
     function awaitLevelChange(pin: DigitalPin, level: number): boolean {
         let ticks = 0;
